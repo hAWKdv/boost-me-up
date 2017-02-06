@@ -3,10 +3,9 @@
 const connect = require('connect');
 const serveStatic = require('serve-static');
 const PORT = 8080;
-const PATH = './public';
 
 connect()
-.use(serveStatic(PATH))
+.use(serveStatic('./'))
 .listen(PORT, () => {
   console.log('Server running on 8080...');
 });

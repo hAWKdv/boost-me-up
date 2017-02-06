@@ -7,5 +7,5 @@ const PORT = 8080;
 connect()
 .use(serveStatic('./'))
 .listen(PORT, () => {
-  console.log('Server running on 8080...');
+  console.log(`Server running on ${PORT}...`);
 });

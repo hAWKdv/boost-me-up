@@ -12,36 +12,20 @@ function save(data, fileName) {
   });
 }
 
-function getCategories(data) {
-  const cats = {};
+function getProp(data, prop) {
+  const types = {};
 
   data.makes.forEach((make) => {
     make.models.forEach((model) => {
       model.trims.forEach((trim) => {
         trim.types.forEach((type) => {
-          cats[type.category] = true;
+          types[type[prop]] = true;
         });
       });
     });
   });
 
-  return Object.keys(cats);
-}
-
-function getDoors(data) {
-  const doors = {};
-
-  data.makes.forEach((make) => {
-    make.models.forEach((model) => {
-      model.trims.forEach((trim) => {
-        trim.types.forEach((type) => {
-          doors[type.doors] = true;
-        });
-      });
-    });
-  });
-
-  return Object.keys(doors);
+  return Object.keys(types);
 }
 
 function standardize(data, prop, map) {
@@ -54,6 +38,33 @@ function standardize(data, prop, map) {
             type[prop] = mapTo;
           }
         });
+      });
+    });
+  });
+}
+
+function reduceSimilarTypes(data) {
+  const hpTolerance = 20;
+
+  data.makes.forEach((make) => {
+    make.models.forEach((model) => {
+      model.trims.forEach((trim) => {
+        const qualifiedTypes = [];
+        let lastQualified;
+
+        trim.types.forEach((type, idx) => {
+          if (
+            idx === 0 ||
+            Math.abs(lastQualified.hp - type.hp) >= hpTolerance ||
+            lastQualified.category !== type.category ||
+            lastQualified.doors !== type.doors
+          ) {
+            qualifiedTypes.push(type);
+            lastQualified = type;
+          }
+        });
+
+        trim.types = qualifiedTypes;
       });
     });
   });
@@ -92,9 +103,12 @@ function init() {
   //   'SUV, Crossover': 'Crossover-SUV'
   // };
   // standardize(data, 'category', catMap);
-  console.log(getCategories(data));
+  // console.log(getProp(data, 'category'));
 
-  // save(data, 'car-data-processed');
+  // Reduce similar types
+  reduceSimilarTypes(data);
+
+  save(data, 'car-data-processed');
 }
 
 init();

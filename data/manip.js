@@ -70,6 +70,33 @@ function reduceSimilarTypes(data) {
   });
 }
 
+function makeFlat(data) {
+  const flat = { makes: [] };
+
+  data.makes.forEach((make) => {
+    make.models.forEach((model) => {
+      model.trims.forEach((trim) => {
+        trim.types.forEach((type) => {
+          flat.makes.push({
+            make: make.make,
+            model: model.model,
+            trim: trim.trim,
+            engine: type.engine,
+            hp: type.hp,
+            category: type.category,
+            doors: type.doors,
+            beginYear: type.beginYear,
+            endYear: type.endYear,
+            url: type.url
+          });
+        });
+      });
+    });
+  });
+
+  return flat;
+}
+
 function init() {
   const data = JSON.parse(fs.readFileSync(__dirname + '/car-data-processed.json', 'utf8'));
 
@@ -106,9 +133,13 @@ function init() {
   // console.log(getProp(data, 'category'));
 
   // Reduce similar types
-  reduceSimilarTypes(data);
+  // reduceSimilarTypes(data);
 
-  save(data, 'car-data-processed');
+  // save(data, 'car-data-processed');
+
+  // Make flat
+  const flat = makeFlat(data);
+  save(flat, 'car-data-flat');
 }
 
 init();

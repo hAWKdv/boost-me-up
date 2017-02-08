@@ -97,8 +97,22 @@ function makeFlat(data) {
   return flat;
 }
 
+function setInitProps(data) {
+  data.makes.forEach((obj) => {
+    obj.props = {
+      gender: 0,
+      ageGroup: 0,
+      relationship: 0,
+      climate: 0,
+      autoSport: 0,
+      speedLimits: 0,
+      usageReason: 0
+    };
+  });
+}
+
 function init() {
-  const data = JSON.parse(fs.readFileSync(__dirname + '/car-data-processed.json', 'utf8'));
+  const data = JSON.parse(fs.readFileSync(__dirname + '/car-data-flat.json', 'utf8'));
 
   // Standardize doors
 
@@ -138,8 +152,12 @@ function init() {
   // save(data, 'car-data-processed');
 
   // Make flat
-  const flat = makeFlat(data);
-  save(flat, 'car-data-flat');
+  // const flat = makeFlat(data);
+  // save(flat, 'car-data-flat');
+
+  // Set initial props
+  // setInitProps(data);
+  // save(data, 'car-data-flat');
 }
 
 init();

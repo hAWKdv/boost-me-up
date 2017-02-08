@@ -111,11 +111,82 @@ function setInitProps(data) {
   });
 }
 
+function setPropValues(data) {
+  data.makes.forEach((car) => {
+    const hp = car.hp !== '-' ? parseInt(car.hp) : 0;
+    const beginY = car.beginYear !== '-' ? parseInt(car.beginYear) : 1999;
+    const endY = car.endYear !== '-' ? parseInt(car.endYear) : (new Date()).getFullYear();
+    const prod = beginY + Math.round(Math.abs(beginY - endY));
+
+    // Category
+    switch (car.category) {
+      case 'Sedan':
+        break;
+      case 'Hatchback':
+        break;
+      case 'Coupe':
+      case 'Roadster':
+        break;
+      case 'Targa':
+      case 'Convertible':
+        break;
+      case 'Wagon':
+      case 'Minivan':
+      case 'Wagon-Minivan':
+        break;
+      case 'Pick-up':
+        break;
+      case 'Off-road vehicle':
+        break;
+      case 'SUV':
+      case 'Crossover':
+      case 'Convertible-SUV':
+      case 'Crossover-SUV':
+      case 'Coupe-SUV':
+        break;
+    }
+
+    // Make
+    switch (car.make.toLowerCase()) {
+      case 'bmw':
+      case 'mercedes':
+        break;
+    }
+
+    // Model
+    switch (car.model.toLowerCase()) {
+      case '':
+        break;
+    }
+
+    // HP
+    if (hp <= 150) {
+
+    } else if (150 < hp && hp <= 250) {
+
+    } else if (250 < hp && hp < 400) {
+
+    } else if (hp >= 400) {
+
+    }
+
+    // Prod year
+    if (prod <= 1980) {
+
+    } else if (1980 < prod && prod <= 1995) {
+
+    } else if (1995 < prod && prod <= 2008) {
+
+    } else if (prod >= 2009) {
+
+    }
+  });
+}
+
 function init() {
   const data = JSON.parse(fs.readFileSync(__dirname + '/car-data-flat.json', 'utf8'));
 
-  // Standardize doors
-
+  // // >>> Standardize doors
   // const doorMap = {
   //   '4+1': '4/5',
   //   '4(5)': '4/5',
@@ -130,8 +201,7 @@ function init() {
   // };
   // standardize(data, 'doors', doorMap);
 
-  // Standardize categories
-
+  // // >>> Standardize categories
   // const catMap = {
   //   'Combi': 'Wagon',
   //   'MPV': 'Minivan',
@@ -146,16 +216,15 @@ function init() {
   // standardize(data, 'category', catMap);
   // console.log(getProp(data, 'category'));
 
-  // Reduce similar types
+  // // >>> Reduce similar types
   // reduceSimilarTypes(data);
-
   // save(data, 'car-data-processed');
 
-  // Make flat
+  // // >>> Make flat
   // const flat = makeFlat(data);
   // save(flat, 'car-data-flat');
 
-  // Set initial props
+  // // >>> Set initial props
   // setInitProps(data);
   // save(data, 'car-data-flat');
 }

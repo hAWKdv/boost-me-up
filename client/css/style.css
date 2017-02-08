@@ -21,3 +21,20 @@ main {
 ul.dropdown-content.select-dropdown li:not(.disabled) span {
   color: #2196f3;
 }
+
+#car-card {
+  text-align: left;
+  display: none;
+}
+
+#car-card table {
+  width: 100%;
+}
+
+#car-card table td {
+  vertical-align: top;
+}
+
+button {
+  margin-bottom: 100px;
+}

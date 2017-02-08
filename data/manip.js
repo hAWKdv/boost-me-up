@@ -100,13 +100,11 @@ function makeFlat(data) {
 function setInitProps(data) {
   data.makes.forEach((obj) => {
     obj.props = {
-      gender: 0,
-      ageGroup: 0,
-      relationship: 0,
-      climate: 0,
-      autoSport: 0,
-      speedLimits: 0,
-      usageReason: 0
+      carForYou: 0,
+      passengers: 0,
+      fastDriving: 0,
+      whatCar: 0,
+      caring: 0
     };
   });
 }
@@ -150,12 +148,6 @@ function setPropValues(data) {
     switch (car.make.toLowerCase()) {
       case 'bmw':
       case 'mercedes':
-        break;
-    }
-
-    // Model
-    switch (car.model.toLowerCase()) {
-      case '':
         break;
     }
 

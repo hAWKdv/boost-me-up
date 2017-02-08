@@ -11,15 +11,6 @@ $(function () {
       $caring = $('#q-caring'),
       $carCard = $('#car-card');
 
-  function getPhoto(url) {
-    return new Promise((res, rej) => {
-      $.get(url, function (html) {
-        var $html = $(html);
-        res(url);
-      });
-    })
-  }
-
   // Activate Materialized select
   $('select').material_select();
 
@@ -36,32 +27,27 @@ $(function () {
     if (!Object.keys(obj).find(key => isNaN(obj[key]))) {
       // Send to BE; Currently mocked
       $.get('./data/car-mock.json', function (car) {
-        var $table, $cardCont,
-            adUrl = AUTO_DATA_URL + car.url;
-
-        getPhoto().then((url) => {
-
-        });
+        var $table, $cardCont;
 
         // Can be optimized
         $carCard.find('.card-title').html(car.make + ' ' + car.model);
         $carCard.find('.trim').html(car.trim);
-        $carCard.find('.card-action').children().first().attr('href', adUrl);
+        $carCard.find('.card-action').children().first().attr('href', AUTO_DATA_URL + car.url);
 
         $table = $('<table><tr><td></td><td></td></tr></table>');
 
         $table.find('tr').children().first()
           .append('<ul>'
-            + '<li>Engine: <strong>' + car.engine + '</strong></li>'
-            + '<li>HP: <strong>' + car.hp + '</strong></li>'
-            + '<li>Category: <strong>' + car.category + '</strong></li>'
+            + '<li>Двигател: <strong>' + car.engine + '</strong></li>'
+            + '<li>КС: <strong>' + car.hp + '</strong></li>'
+            + '<li>Категория: <strong>' + car.category + '</strong></li>'
             + '</ul>');
 
         $table.find('tr').children().last()
           .append('<ul>'
-            + '<li>Doors: <strong>' + car.doors + '</strong></li>'
-            + '<li>Start of Production: <strong>' + car.beginYear + '</strong></li>'
-            + '<li>End of Production: <strong>' + car.endYear + '</strong></li>'
+            + '<li>Врати: <strong>' + car.doors + '</strong></li>'
+            + '<li>Начало производство: <strong>' + car.beginYear + '</strong></li>'
+            + '<li>Край производство: <strong>' + car.endYear + '</strong></li>'
             + '</ul>');
 
         $cardCont = $carCard.find('.card-content');

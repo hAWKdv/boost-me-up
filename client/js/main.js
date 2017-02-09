@@ -3,7 +3,8 @@
 $(function () {
   'use strict';
 
-  var AUTO_DATA_URL = 'http://auto-data.net/en/',
+  var BE_API_URL = '192.168.1.107:8080',
+      AUTO_DATA_URL = 'http://auto-data.net/en/',
       $carForYou = $('#q-car-for-you'),
       $passengers = $('#q-passengers'),
       $fastDriving = $('#q-fast-driving'),
@@ -25,36 +26,41 @@ $(function () {
     };
 
     if (!Object.keys(obj).find(key => isNaN(obj[key]))) {
-      // Send to BE; Currently mocked
-      $.get('./data/car-mock.json', function (car) {
-        var $table, $cardCont;
+      $.ajax({
+        type: 'POST',
+        url: 'http://' + BE_API_URL + '/getBestCar',
+        data: JSON.stringify(obj),
+        contentType: 'application/json',
+        success: function (car) {
+          var $table, $cardCont;
 
-        // Can be optimized
-        $carCard.find('.card-title').html(car.make + ' ' + car.model);
-        $carCard.find('.trim').html(car.trim);
-        $carCard.find('.card-action').children().first().attr('href', AUTO_DATA_URL + car.url);
+          // Can be optimized
+          $carCard.find('.card-title').html(car.make + ' ' + car.model);
+          $carCard.find('.trim').html(car.trim);
+          $carCard.find('.card-action').children().first().attr('href', AUTO_DATA_URL + car.url);
 
-        $table = $('<table><tr><td></td><td></td></tr></table>');
+          $table = $('<table><tr><td></td><td></td></tr></table>');
 
-        $table.find('tr').children().first()
-          .append('<ul>'
-            + '<li>Двигател: <strong>' + car.engine + '</strong></li>'
-            + '<li>КС: <strong>' + car.hp + '</strong></li>'
-            + '<li>Категория: <strong>' + car.category + '</strong></li>'
-            + '</ul>');
+          $table.find('tr').children().first()
+            .append('<ul>'
+              + '<li>Двигател: <strong>' + car.engine + '</strong></li>'
+              + '<li>КС: <strong>' + car.hp + '</strong></li>'
+              + '<li>Категория: <strong>' + car.category + '</strong></li>'
+              + '</ul>');
 
-        $table.find('tr').children().last()
-          .append('<ul>'
-            + '<li>Врати: <strong>' + car.doors + '</strong></li>'
-            + '<li>Начало производство: <strong>' + car.beginYear + '</strong></li>'
-            + '<li>Край производство: <strong>' + car.endYear + '</strong></li>'
-            + '</ul>');
+          $table.find('tr').children().last()
+            .append('<ul>'
+              + '<li>Врати: <strong>' + car.doors + '</strong></li>'
+              + '<li>Начало производство: <strong>' + car.beginYear + '</strong></li>'
+              + '<li>Край производство: <strong>' + car.endYear + '</strong></li>'
+              + '</ul>');
 
-        $cardCont = $carCard.find('.card-content');
-        $cardCont.find('table').remove();
-        $cardCont.append($table);
+          $cardCont = $carCard.find('.card-content');
+          $cardCont.find('table').remove();
+          $cardCont.append($table);
 
-        $carCard.fadeIn();
+          $carCard.fadeIn();
+        }
       });
     }
   });

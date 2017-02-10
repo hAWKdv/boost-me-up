@@ -235,9 +235,10 @@ const carManip = {
   },
 
   _prodYear: (car) => {
-    const beginY = car.beginYear !== '-' ? parseInt(car.beginYear) : 1999;
-    const endY = car.endYear !== '-' ? parseInt(car.endYear) : (new Date()).getFullYear();
-    const prod = beginY + Math.round(Math.abs(beginY - endY));
+    // const beginY = car.beginYear !== '-' ? parseInt(car.beginYear) : 1999;
+    // const endY = car.endYear !== '-' ? parseInt(car.endYear) : (new Date()).getFullYear();
+    // const prod = beginY + Math.round(Math.abs(beginY - endY));
+    const prod = parseInt(car.beginYear);
 
     if (prod <= 1980) {
       car.props.caring = 1;
@@ -253,7 +254,7 @@ const carManip = {
 
 
 function init() {
-  const data = JSON.parse(fs.readFileSync(__dirname + '/car-data-flat.json', 'utf8'));
+  const data = JSON.parse(fs.readFileSync(__dirname + '/car-data-flat-filtered-props.json', 'utf8'));
 
   // // >>> Standardize doors
   // const doorMap = {
@@ -298,15 +299,18 @@ function init() {
   // save(data, 'car-data-flat');
 
   // // >>> Set props based on questions
-  // carManip.setProps(data);
+  carManip.setProps(data);
   // save(data, 'car-data-flat');
 
-  console.log(data.makes.length);
+  // console.log(data.makes.length);
   // Remove cars with zero props
-  data.makes = data.makes.filter((car) => {
-    return !Object.keys(car.props).find(key => car.props[key] === 0);
-  });
-  console.log(data.makes.length);
+  // data.makes = data.makes.filter((car) => {
+  //   return !Object.keys(car.props).find(key => car.props[key] === 0);
+  // });
+  // Remove cars with empty beginYear
+  // data.makes = data.makes.filter(car => car.beginYear !== '-');
+
+  // console.log(data.makes.length);
   save(data, 'car-data-flat-filtered-props');
 }
 
